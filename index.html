@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<h1>Simple Weather App</h1>
+<label for="cityInput">Enter city name:</label>
+<input type="text" id="cityInput" placeholder="City name">
+<button onclick="fetchWeather()">Get Weather</button>
+
+<h2>Weather Data</h2>
+<table>
+    <thead>
+    <tr>
+        <th>City</th>
+        <th>Temperature (°C)</th>
+        <th>Weather</th>
+        <th>Humidity (%)</th>
+        <th>Wind Speed (m/s)</th>
+    </tr>
+    </thead>
+    <tbody id="weatherTableBody"></tbody>
+</table>
+
+<script>
+    // Fetch weather data from the Java backend
+    function fetchWeather() {
+        const city = document.getElementById("cityInput").value; // Get city name from input
+        if (!city) { // Check if input is empty
+            alert("Please enter a city name.");
+            return;
+        }
+
+        fetch(`http://localhost:8080/weather?city=${city}`) // Make a request to the Java backend
+            .then(response =>
+            {
+                if (!response.ok)
+                {
+                    throw new Error("Error fetching weather data."); // Handle HTTP errors
+                }
+                return response.json(); // Parse response as JSON
+            })
+            .then(data =>
+            {
+                updateTable(data); // Update the table with weather data
+            })
+            .catch(error =>
+            {
+                console.error(error);
+                alert("Could not fetch weather data. Please try again."); // Handle errors gracefully
+            });
+    }
+
+    // Update the weather table with data
+    function updateTable(data)
+    {
+        const tableBody = document.getElementById("weatherTableBody"); // Get table body
+        tableBody.innerHTML = ""; // Clear existing table rows
+
+        const row = document.createElement("tr"); // Create a new row
+        row.innerHTML = `
+        <td>${data.name}</td>
+            <td>${data.main.temp}</td>
+            <td>${data.weather[0].description}</td>
+            <td>${data.main.humidity}</td>
+            <td>${data.wind.speed}</td>
+      `;
+        tableBody.appendChild(row); // Add the row to the table
+    }
+</script>
+</body>
+</html>
