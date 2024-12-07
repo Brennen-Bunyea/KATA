@@ -55,7 +55,7 @@
         fetch(`http://localhost:8080/weather?city=${city}`) // Make a request to the Java backend
             .then(response =>
             {
-                if (!response.ok)
+                if (!response.ok) // Checks if response is valid
                 {
                     throw new Error("Error fetching weather data."); // Handle HTTP errors
                 }
