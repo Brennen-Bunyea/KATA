@@ -22,8 +22,7 @@ public class DemoApplication
 	// Method to fetch weather data from the OpenWeatherMap API
 	private String fetchWeather(String city) throws Exception {
 		// Construct the API URL with the city name and API key
-		String apiUrl = "https://api.openweathermap.org/data/2.5/weather?q="
-				+ city + "&appid=" + API_KEY + "&units=metric";
+		String apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + API_KEY + "&units=metric";
 
 		// Create a connection to the API
 		URL url = new URL(apiUrl);
@@ -43,15 +42,17 @@ public class DemoApplication
 		return response.toString(); // Return the full API response as a string
 	}
 
+	// Runs the application on local server
 	public static void main(String[] args)
 	{
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
+	//Fetches weather data
+	//Allows frontend to talk to backend
 	@CrossOrigin(origins = "*")
 	@GetMapping("/weather")
 	public String weather(@RequestParam(value = "city", defaultValue = "Milwaukee") String city) throws Exception {
 		return fetchWeather(city);
 	}
-
 }
