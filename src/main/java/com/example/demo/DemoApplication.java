@@ -48,6 +48,8 @@ public class DemoApplication
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
+	//Fetches weather data
+	//Allows frontend to talk to backend
 	@CrossOrigin(origins = "*")
 	@GetMapping("/weather")
 	public String weather(@RequestParam(value = "city", defaultValue = "Milwaukee") String city) throws Exception {
